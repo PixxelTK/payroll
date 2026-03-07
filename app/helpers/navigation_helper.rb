@@ -1,10 +1,10 @@
 module NavigationHelper
-  def nav_link(name, path)
+  def nav_link(name, path, match: nil)
     active =
-      if path == root_path
-        request.path == root_path
+      if match
+        request.path.start_with?(match) || request.path == path
       else
-        request.path.start_with?(path)
+        request.path == path || request.path.start_with?("#{path}/")
       end
 
     css = if active
