@@ -10,6 +10,28 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should search employees by name" do
+    Employee.create!(
+      name: "Alice Developer",
+      position: "Developer",
+      salary: 1000,
+      pin: "1234",
+      pin_confirmation: "1234"
+    )
+
+    get employees_url, params: { q: "Alice" }
+
+    assert_response :success
+    assert_match "Alice Developer", @response.body
+  end
+
+  test "should return all employees when search empty" do
+    get employees_url, params: { q: "" }
+
+    assert_response :success
+    assert_match @employee.name, @response.body
+  end
+
   test "should get new" do
     get new_employee_url
     assert_response :success
