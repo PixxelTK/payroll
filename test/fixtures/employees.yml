@@ -4,10 +4,10 @@ one:
   name: MyString
   position: MyString
   salary: 9.99
-  pin_digest: MyString
+  pin_digest: <%= BCrypt::Password.create("1234") %>
 
 two:
   name: MyString
   position: MyString
   salary: 9.99
-  pin_digest: MyString
+  pin_digest: <%= BCrypt::Password.create("1234") %>

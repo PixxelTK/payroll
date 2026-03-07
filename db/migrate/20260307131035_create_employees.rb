@@ -4,7 +4,7 @@ class CreateEmployees < ActiveRecord::Migration[8.1]
       t.string :name
       t.string :position
       t.decimal :salary
-      t.integer :pin_digest
+      t.string :pin_digest
 
       t.timestamps
     end
