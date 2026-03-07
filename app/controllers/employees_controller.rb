@@ -1,31 +1,44 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
 
-  # GET /employees or /employees.json
   def index
     @employees = Employee.all
   end
 
-  # GET /employees/1 or /employees/1.json
   def show
+    unless session[:pin_verified] == @employee.id
+      redirect_to verify_pins_path(
+        employee_id: @employee.id,
+        redirect_to: employee_path(@employee)
+      )
+      return
+    end
+
+    session.delete(:pin_verified)
   end
 
-  # GET /employees/new
   def new
     @employee = Employee.new
   end
 
-  # GET /employees/1/edit
   def edit
+    unless session[:pin_verified] == @employee.id
+      redirect_to verify_pins_path(
+        employee_id: @employee.id,
+        redirect_to: edit_employee_path(@employee)
+      )
+      return
+    end
+
+    session.delete(:pin_verified)
   end
 
-  # POST /employees or /employees.json
   def create
     @employee = Employee.new(employee_params)
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to @employee, notice: "Employee was successfully created." }
+        format.html { redirect_to employees_path, notice: "Employee was successfully created.", status: :see_other }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,11 +47,10 @@ class EmployeesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /employees/1 or /employees/1.json
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to @employee, notice: "Employee was successfully updated.", status: :see_other }
+        format.html { redirect_to employees_path, notice: "Employee was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +59,6 @@ class EmployeesController < ApplicationController
     end
   end
 
-  # DELETE /employees/1 or /employees/1.json
   def destroy
     @employee.destroy!
 
@@ -58,13 +69,11 @@ class EmployeesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_employee
       @employee = Employee.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def employee_params
-      params.expect(employee: [ :name, :position, :salary, :pin_digest ])
+      params.expect(employee: [ :name, :position, :salary, :pin, :pin_confirmation ])
     end
 end

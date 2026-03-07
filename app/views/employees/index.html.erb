@@ -17,14 +17,14 @@
 
 <div class="w-[90%] mx-auto mt-6">
     <% if notice.present? %>
-        <p class="py-2 px-3 bg-green-50/50 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+        <p class="py-2 px-3 bg-green-50/20 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
     <% end %>
 
     <div id="employees" class="mt-4 bg-white dark:bg-zinc-800 rounded-xl shadow overflow-hidden">
         <div class="grid grid-cols-3 gap-4 px-4 py-3 bg-white dark:bg-zinc-700/50 font-semibold text-slate-600 dark:text-slate-200">
             <div>Name</div>
             <div>Position</div>
-            <div class="text-right">Actions</div>
+            <div></div>
         </div>
 
         <% if @employees.any? %>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2">
-                        <%= link_to "Show", employee, class: "w-full px-4 py-1 rounded-full sm:w-auto text-center bg-sky-500 text-white inline-block" %>
+                        <%= link_to "Show", verify_pins_path(employee_id: employee.id, redirect_to: employee_path(employee)), class: "w-full px-4 py-1 rounded-full sm:w-auto text-center bg-sky-500 text-white inline-block" %>
 
                         <%= link_to edit_employee_path(employee),
                             class: "flex items-center gap-2 px-4 py-1 rounded-full bg-blue-500 text-white" do %>

@@ -1,7 +1,8 @@
 <%= form_with(model: employee, class: "contents") do |form| %>
+
   <% if employee.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+    <div class="bg-red-50/80 text-red-500 mb-2 px-3 py-2 font-medium rounded-md">
+      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved</h2>
 
       <ul class="list-disc ml-6">
         <% employee.errors.each do |error| %>
@@ -11,27 +12,53 @@
     </div>
   <% end %>
 
+
   <div>
     <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": employee.errors[:name].none?, "border-red-400 focus:outline-red-600": employee.errors[:name].any?}] %>
+    <%= form.text_field :name,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+      {"border-gray-400 focus:outline-blue-600": employee.errors[:name].none?,
+       "border-red-400 focus:outline-red-600": employee.errors[:name].any?}] %>
   </div>
+
 
   <div class="my-5">
     <%= form.label :position %>
-    <%= form.text_field :position, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": employee.errors[:position].none?, "border-red-400 focus:outline-red-600": employee.errors[:position].any?}] %>
+    <%= form.text_field :position,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+      {"border-gray-400 focus:outline-blue-600": employee.errors[:position].none?,
+       "border-red-400 focus:outline-red-600": employee.errors[:position].any?}] %>
   </div>
+
 
   <div class="my-5">
     <%= form.label :salary %>
-    <%= form.text_field :salary, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": employee.errors[:salary].none?, "border-red-400 focus:outline-red-600": employee.errors[:salary].any?}] %>
+    <%= form.text_field :salary,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+      {"border-gray-400 focus:outline-blue-600": employee.errors[:salary].none?,
+       "border-red-400 focus:outline-red-600": employee.errors[:salary].any?}] %>
   </div>
+
 
   <div class="my-5">
-    <%= form.label :pin_digest %>
-    <%= form.number_field :pin_digest, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": employee.errors[:pin_digest].none?, "border-red-400 focus:outline-red-600": employee.errors[:pin_digest].any?}] %>
+    <%= form.label :pin, "PIN" %>
+    <%= form.password_field :pin,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+      {"border-gray-400 focus:outline-blue-600": employee.errors[:pin].none?,
+       "border-red-400 focus:outline-red-600": employee.errors[:pin].any?}] %>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-lg px-3.5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white inline-block font-medium cursor-pointer transition-all" %>
+
+  <div class="my-5">
+    <%= form.label :pin_confirmation, "Confirm PIN" %>
+    <%= form.password_field :pin_confirmation,
+      class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full border-gray-400 focus:outline-blue-600" %>
   </div>
+
+
+  <div>
+    <%= form.submit "Save Employee",
+      class: "w-full sm:w-auto rounded-lg px-3.5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium transition-all" %>
+  </div>
+
 <% end %>

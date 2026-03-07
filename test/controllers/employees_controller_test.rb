@@ -17,25 +17,67 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create employee" do
     assert_difference("Employee.count") do
-      post employees_url, params: { employee: { name: @employee.name, pin_digest: @employee.pin_digest, position: @employee.position, salary: @employee.salary } }
+      post employees_url, params: {
+        employee: {
+          name: "Test User",
+          position: "Developer",
+          salary: 1000,
+          pin: "1234",
+          pin_confirmation: "1234"
+        }
+      }
     end
 
-    assert_redirected_to employee_url(Employee.last)
+    assert_redirected_to employees_url
   end
 
-  test "should show employee" do
+  test "should show employee (with pin verified)" do
+    post check_pins_url, params: {
+      employee_id: @employee.id,
+      pin: "1234",
+      redirect_to: employee_path(@employee)
+    }
+
     get employee_url(@employee)
     assert_response :success
   end
 
-  test "should get edit" do
+  test "should redirect to verify pin if not verified" do
+    get employee_url(@employee)
+
+    assert_redirected_to verify_pins_path(
+      employee_id: @employee.id,
+      redirect_to: employee_path(@employee)
+    )
+  end
+
+  test "should get edit (with pin verified)" do
+    post check_pins_url, params: {
+      employee_id: @employee.id,
+      pin: "1234",
+      redirect_to: edit_employee_path(@employee)
+    }
+
     get edit_employee_url(@employee)
     assert_response :success
   end
 
   test "should update employee" do
-    patch employee_url(@employee), params: { employee: { name: @employee.name, pin_digest: @employee.pin_digest, position: @employee.position, salary: @employee.salary } }
-    assert_redirected_to employee_url(@employee)
+    post check_pins_url, params: {
+      employee_id: @employee.id,
+      pin: "1234",
+      redirect_to: edit_employee_path(@employee)
+    }
+
+    patch employee_url(@employee), params: {
+      employee: {
+        name: "Updated Name",
+        position: @employee.position,
+        salary: @employee.salary
+      }
+    }
+
+    assert_redirected_to employees_url
   end
 
   test "should destroy employee" do

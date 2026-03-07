@@ -1,9 +1,22 @@
-<div class="bg-linear-to-r from-sky-500 to-blue-500 pt-6 h-44">
+<% gradient_class = local_assigns[:gradient] || "from-sky-500 to-blue-500" %>
+<% icon_name = local_assigns[:icon] %>
+
+<div class="bg-linear-to-r <%= gradient_class %> pt-6 h-44">
   <div class="w-[90%] mx-auto">
 
-    <h1 class="text-4xl font-bold text-white">
-      <%= title %>
-    </h1>
+    <div class="flex items-center gap-3">
+
+      <% if icon_name.present? %>
+        <div class="text-white">
+          <%= heroicon icon_name, variant: :solid, options: { class: "w-8 h-8" } %>
+        </div>
+      <% end %>
+
+      <h1 class="text-4xl font-bold text-white">
+        <%= title %>
+      </h1>
+
+    </div>
 
     <% if breadcrumb.present? %>
       <nav class="text-sm text-blue-100 mt-2">
