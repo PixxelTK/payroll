@@ -24,7 +24,9 @@
 
   <div class="my-5">
     <%= form.label :position %>
-    <%= form.text_field :position,
+    <%= form.select :position,
+      Employee::POSITIONS,
+      { prompt: "Select position" },
       class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
       {"border-gray-400 focus:outline-blue-600": employee.errors[:position].none?,
        "border-red-400 focus:outline-red-600": employee.errors[:position].any?}] %>
