@@ -1,5 +1,5 @@
 module NavigationHelper
-  def nav_link(name, path, match: nil)
+  def nav_link(name, path, icon: nil, match: nil)
     active =
       if match
         request.path.start_with?(match) || request.path == path
@@ -8,13 +8,16 @@ module NavigationHelper
       end
 
     css = if active
-      "block px-3 py-2 rounded-lg bg-sky-500 text-white dark:bg-zinc-700 transition-all"
+      "flex items-center gap-2 px-3 py-2 rounded-lg bg-sky-500 text-white dark:bg-zinc-700 transition-all"
     else
-      "block px-3 py-2 rounded-lg hover:bg-zinc-200 text-slate-600 dark:text-slate-200 dark:hover:bg-zinc-800 transition-all"
+      "flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-200 text-slate-600 dark:text-slate-200 dark:hover:bg-zinc-800 transition-all"
     end
 
-    link_to name, path,
+    link_to path,
       class: css,
-      data: { turbo_frame: "content", turbo_action: "advance" }
+      data: { turbo_frame: "content", turbo_action: "advance" } do
+      concat heroicon(icon, variant: :outline, options: { class: "w-5 h-5" }) if icon
+      concat content_tag(:span, name)
+    end
   end
 end
