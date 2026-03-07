@@ -8,9 +8,9 @@ module NavigationHelper
       end
 
     css = if active
-      "block px-3 py-2 rounded bg-sky-500 text-white dark:bg-zinc-700"
+      "block px-3 py-2 rounded-lg bg-sky-500 text-white dark:bg-zinc-700 transition-all"
     else
-      "block px-3 py-2 rounded hover:bg-zinc-400 text-slate-600 dark:text-slate-200 dark:hover:bg-zinc-800"
+      "block px-3 py-2 rounded-lg hover:bg-zinc-200 text-slate-600 dark:text-slate-200 dark:hover:bg-zinc-800 transition-all"
     end
 
     link_to name, path,
