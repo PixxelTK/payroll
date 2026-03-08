@@ -20,6 +20,7 @@ export default class extends Controller {
     }
 
     this.updatePin()
+    this.trySubmit()
   }
 
   keydown(event) {
@@ -33,5 +34,11 @@ export default class extends Controller {
 
   updatePin() {
     this.hiddenTarget.value = this.inputTargets.map(i => i.value).join("")
+  }
+
+  trySubmit() {
+    if (this.hiddenTarget.value.length === this.inputTargets.length) {
+      this.element.querySelector("form").requestSubmit()
+    }
   }
 }
