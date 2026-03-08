@@ -16,8 +16,8 @@
   <div>
     <%= form.label :name %>
     <%= form.text_field :name,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-      {"border-gray-400 focus:outline-blue-600": employee.errors[:name].none?,
+      class: ["block bg-gray-50 dark:bg-zinc-600 border rounded-md px-3 py-2 mt-2 w-full",
+      {"border-slate-300 dark:border-zinc-500 focus:outline-none": employee.errors[:name].none?,
        "border-red-400 focus:outline-red-600": employee.errors[:name].any?}] %>
   </div>
 
@@ -27,8 +27,8 @@
     <%= form.select :position,
       Employee::POSITIONS,
       { prompt: "Select position" },
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-      {"border-gray-400 focus:outline-blue-600": employee.errors[:position].none?,
+      class: ["block bg-gray-50 dark:bg-zinc-600 border rounded-md px-3 py-2 mt-2 w-full",
+      {"border-slate-300 dark:border-zinc-500 focus:outline-none": employee.errors[:position].none?,
        "border-red-400 focus:outline-red-600": employee.errors[:position].any?}] %>
   </div>
 
@@ -36,25 +36,25 @@
   <div class="my-5">
     <%= form.label :salary %>
     <%= form.text_field :salary,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-      {"border-gray-400 focus:outline-blue-600": employee.errors[:salary].none?,
+      class: ["block bg-gray-50 dark:bg-zinc-600 border rounded-md px-3 py-2 mt-2 w-full",
+      {"border-slate-300 dark:border-zinc-500 focus:outline-none": employee.errors[:salary].none?,
        "border-red-400 focus:outline-red-600": employee.errors[:salary].any?}] %>
   </div>
 
 
   <div class="my-5">
     <%= form.label :pin, "PIN" %>
-    <%= form.password_field :pin,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-      {"border-gray-400 focus:outline-blue-600": employee.errors[:pin].none?,
+    <%= form.password_field :pin, maxlength: 4,
+      class: ["block bg-gray-50 dark:bg-zinc-600 border rounded-md px-3 py-2 mt-2 w-full",
+      {"border-slate-300 dark:border-zinc-500 focus:outline-none": employee.errors[:pin].none?,
        "border-red-400 focus:outline-red-600": employee.errors[:pin].any?}] %>
   </div>
 
 
   <div class="my-5">
     <%= form.label :pin_confirmation, "Confirm PIN" %>
-    <%= form.password_field :pin_confirmation,
-      class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full border-gray-400 focus:outline-blue-600" %>
+    <%= form.password_field :pin_confirmation, maxlength: 4,
+      class: "block bg-gray-50 dark:bg-zinc-600 border rounded-md px-3 py-2 mt-2 w-full border-slate-300 dark:border-zinc-500 focus:outline-none" %>
   </div>
 
 

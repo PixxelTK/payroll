@@ -26,15 +26,6 @@ class EmployeesController < ApplicationController
   end
 
   def edit
-    unless session[:pin_verified] == @employee.id
-      redirect_to verify_pins_path(
-        employee_id: @employee.id,
-        redirect_to: edit_employee_path(@employee)
-      )
-      return
-    end
-
-    session.delete(:pin_verified)
   end
 
   def create
@@ -54,7 +45,7 @@ class EmployeesController < ApplicationController
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to employees_path, notice: "Employee was successfully updated.", status: :see_other }
+        format.html { redirect_to employee_path(@employee), notice: "Employee updated." }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit, status: :unprocessable_entity }
