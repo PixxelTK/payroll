@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
+  before_action :set_employee, only: %i[ show edit update destroy confirm_destroy ]
   PIN_TIMEOUT = 5.minutes
 
   def index
@@ -67,6 +68,10 @@ class EmployeesController < ApplicationController
         format.json { render json: @employee.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def confirm_destroy
+    @employee = Employee.find(params.expect(:id))
   end
 
   def destroy

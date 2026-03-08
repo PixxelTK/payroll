@@ -6,20 +6,24 @@
 %>
 
 <div class="w-[90%] max-w-4xl mx-auto flex justify-between gap-2 bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-4 relative z-10 mb-6">
-  <%= link_to employees_path, class: "w-full sm:w-auto flex gap-1 items-center rounded-md px-3.5 py-2.5 bg-gray-100 dark:bg-zinc-500 hover:bg-gray-50 hover:bg-zinc-500/90 transition" do %>
+  <%= link_to employees_path, class: "w-full sm:w-auto flex gap-1 items-center rounded-md px-3.5 py-2.5 bg-gray-100 dark:bg-zinc-500 hover:bg-gray-200 dark:hover:bg-zinc-500/90 transition" do %>
     <%= heroicon "chevron-left", variant: :solid, options: { class: "w-4 h-4" } %>
     <span>Back<span>
   <% end %>
   <div class="flex gap-2">
     <%= link_to edit_employee_path(@employee),
       data: { turbo_frame: "modal" },
-      class: "w-full sm:w-auto flex gap-2 items-center rounded-md px-3.5 py-2.5 bg-gray-100 dark:bg-zinc-500 hover:bg-gray-50 hover:bg-zinc-500/90 transition" do %>
+      class: "w-full sm:w-auto flex gap-2 items-center rounded-md px-3.5 py-2.5 bg-gray-100 dark:bg-zinc-500 hover:bg-gray-200 dark:hover:bg-zinc-500/90 transition" do %>
 
       <%= heroicon "pencil", variant: :solid, options: { class: "w-3 h-3" } %>
       <span>Edit</span>
     <% end %>
 
-    <%= button_to "Delete", @employee, method: :delete, form_class: "sm:inline-block", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-500 hover:bg-red-400 font-medium cursor-pointer transition", data: { turbo_confirm: "Are you sure?" } %>
+    <%= link_to confirm_destroy_employee_path(@employee),
+      data: { turbo_frame: "modal" },
+      class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-500 hover:bg-red-400 font-medium text-center transition" do %>
+        Delete
+    <% end %>
   </div>
 </div>
 

@@ -129,4 +129,25 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to employees_url
   end
+
+  test "should get confirm destroy" do
+    post check_pins_url, params: {
+      employee_id: @employee.id,
+      pin: "1234",
+      redirect_to: employee_path(@employee)
+    }
+
+    get confirm_destroy_employee_url(@employee)
+
+    assert_response :success
+    assert_select "turbo-frame#modal"
+    assert_match "Delete Employee", @response.body
+  end
+
+  test "should route confirm_destroy" do
+    assert_routing(
+      { method: "get", path: "/employees/#{@employee.id}/confirm_destroy" },
+      { controller: "employees", action: "confirm_destroy", id: @employee.id.to_s }
+    )
+  end
 end

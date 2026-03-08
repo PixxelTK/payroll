@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   get "employees/index"
   root "employees#index"
-  resources :employees
+  resources :employees do
+    member do
+      get :confirm_destroy
+    end
+  end
   resources :attendances
   resources :pins, only: [] do
     collection do
