@@ -1,0 +1,76 @@
+<% attendance = employee.attendances.find_by(work_date: Date.current) %>
+
+<div>
+  <div class="flex justify-between items-center pb-2 pt-4">
+    <div class="flex gap-2 items-center">
+      <h3 class="text-lg font-semibold">Today's Attendance</h3>
+
+      <% if attendance.present? && attendance.check_out.present? %>
+        <span class="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+          Completed
+        </span>
+      <% elsif attendance.present? %>
+        <span class="text-xs px-3 py-1 rounded-full bg-orange-100 text-orange-700 dark:bg-orange-400 dark:text-white">
+          Working
+        </span>
+      <% end %>
+    </div>
+    
+    <span class="text-gray-500 dark:text-gray-300 block">
+      <%= Time.current.strftime("%d %b %Y %H:%M") %>
+    </span>
+  </div>
+
+  <% if attendance.present? %>
+
+    <% hours = attendance.work_hours %>
+    <% ot = attendance.ot_hours %>
+
+    <% progress = [(hours / 8.0 * 100), 100].min %>
+
+    <div class="mb-3">
+      <div class="flex justify-end text-xs text-gray-500 dark:text-gray-300 mb-1">
+        <span><%= format("%.2f", hours) %> / 8h</span>
+      </div>
+
+      <div class="w-full bg-gray-200 dark:bg-zinc-600 rounded-full h-2 overflow-hidden">
+        <div
+          class="h-full bg-sky-500 rounded-full transition-all duration-500"
+          style="width: <%= progress %>%">
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+
+      <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+        <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">Check in</p>
+        <p class="text-lg font-semibold">
+          <%= attendance.check_in.strftime("%H:%M") %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+        <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">Check out</p>
+        <p class="text-lg font-semibold">
+          <%= attendance.check_out ? attendance.check_out.strftime("%H:%M") : "-" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+        <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">Hours</p>
+        <p class="text-lg font-semibold">
+          <%= attendance.check_out ? "#{format('%.2f', hours)} h" : "-" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+        <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">OT</p>
+        <p class="text-lg font-semibold text-orange-400">
+          <%= attendance.check_out ? "#{format('%.2f', ot)} h" : "-" %>
+        </p>
+      </div>
+
+    </div>
+  <% end %>
+</div>

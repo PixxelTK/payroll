@@ -1,0 +1,136 @@
+<% date ||= Date.current %>
+
+<% working_days = employee.monthly_working_days(date) %>
+<% ot_hours = employee.monthly_ot_hours(date) %>
+<% ot_pay = employee.monthly_ot_pay(date) %>
+<% tax = employee.monthly_tax(date) %>
+<% net_pay = employee.monthly_net_pay(date) %>
+
+<% attendances = employee.attendances.where(work_date: date.beginning_of_month..date.end_of_month).order(:work_date) %>
+
+<div class="bg-white dark:bg-zinc-700 shadow-lg rounded-2xl p-6 mt-6 mb-6">
+    <div class="flex justify-between items-center mb-5">
+        <h3 class="text-lg font-semibold">
+            Payroll Summary
+        </h3>
+
+        <div class="flex items-center gap-2 text-sm">
+
+            <%= link_to employee_path(employee, month: (date - 1.month).strftime("%Y-%m")),
+            class: "p-2 rounded-md bg-gray-100 dark:bg-zinc-600 hover:bg-gray-200 dark:hover:bg-zinc-500" do %>
+            <%= heroicon "chevron-left", variant: :solid, options: { class: "w-4 h-4" } %>
+            <% end %>
+
+            <span class="font-medium w-28 text-center">
+            <%= date.strftime("%B %Y") %>
+            </span>
+
+            <% unless date >= Date.current.beginning_of_month %>
+            <%= link_to employee_path(employee, month: (date + 1.month).strftime("%Y-%m")),
+                class: "p-2 rounded-md bg-gray-100 dark:bg-zinc-600 hover:bg-gray-200 dark:hover:bg-zinc-500" do %>
+                <%= heroicon "chevron-right", variant: :solid, options: { class: "w-4 h-4" } %>
+            <% end %>
+            <% else %>
+            <span class="p-2 rounded-md bg-gray-100 dark:bg-zinc-600 opacity-70">
+                <%= heroicon "chevron-right", variant: :solid, options: { class: "w-4 h-4" } %>
+            </span>
+            <% end %>
+
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+        <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+            <p class="text-xs text-gray-500 dark:text-gray-300">Working Days</p>
+            <p class="text-lg font-semibold"><%= working_days %></p>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+            <p class="text-xs text-gray-500 dark:text-gray-300">OT Hours</p>
+            <p class="text-lg font-semibold text-orange-400">
+            <%= format("%.2f", ot_hours) %> h
+            </p>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+            <p class="text-xs text-gray-500 dark:text-gray-300">OT Pay</p>
+            <p class="text-lg font-semibold">
+            <%= number_to_currency(ot_pay, unit: "", precision: 2) %>
+            </p>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+            <p class="text-xs text-gray-500 dark:text-gray-300">Tax</p>
+            <p class="text-lg font-semibold text-red-400">
+            <%= number_to_currency(tax, unit: "", precision: 2) %>
+            </p>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
+            <p class="text-xs text-gray-500 dark:text-gray-300">Net Pay</p>
+            <p class="text-lg font-semibold text-green-600">
+            <%= number_to_currency(net_pay, unit: "", precision: 2) %>
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-6">
+
+        <h4 class="text-sm font-semibold mb-3 text-gray-600 dark:text-gray-300">
+            Monthly Attendance
+        </h4>
+
+        <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-zinc-600">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-100 dark:bg-zinc-600 text-left">
+                    <tr>
+                    <th class="px-4 py-2">Date</th>
+                    <th class="px-4 py-2">Check in</th>
+                    <th class="px-4 py-2">Check out</th>
+                    <th class="px-4 py-2">Hours</th>
+                    <th class="px-4 py-2">OT Hours</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <% if attendances.any? %>
+                    <% attendances.each do |a| %>
+                        <tr class="border-t border-gray-200 dark:border-zinc-600">
+                        <td class="px-4 py-2 font-medium">
+                            <%= a.work_date.strftime("%d %b %Y") %>
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <%= a.check_in&.strftime("%H:%M") || "-" %>
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <%= a.check_out&.strftime("%H:%M") || "-" %>
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <%= a.work_hours ? format("%.2f", a.work_hours) : "-" %>
+                        </td>
+
+                        <td class="px-4 py-2 text-orange-400">
+                            <%= a.ot_hours ? format("%.2f", a.ot_hours) : "-" %>
+                        </td>
+                        </tr>
+                    <% end %>
+
+                    <% else %>
+
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-400">
+                        No attendance records
+                        </td>
+                    </tr>
+
+                    <% end %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
