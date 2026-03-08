@@ -30,7 +30,9 @@
 
     <div class="mb-3">
       <div class="flex justify-end text-xs text-gray-500 dark:text-gray-300 mb-1">
-        <span><%= format("%.2f", hours) %> / 8h</span>
+        <span>
+          <%= format_hours(attendance.work_hours) %> / 8h
+        </span>
       </div>
 
       <div class="w-full bg-gray-200 dark:bg-zinc-600 rounded-full h-2 overflow-hidden">
@@ -60,14 +62,14 @@
       <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
         <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">Hours</p>
         <p class="text-lg font-semibold">
-          <%= attendance.check_out ? "#{format('%.2f', hours)} h" : "-" %>
+          <%= attendance.check_out ? format_hours(attendance.work_hours) : "-" %>
         </p>
       </div>
 
       <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
         <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">OT</p>
         <p class="text-lg font-semibold text-orange-400">
-          <%= attendance.check_out ? "#{format('%.2f', ot)} h" : "-" %>
+          <%= attendance.check_out ? format_hours(attendance.ot_hours) : "-" %>
         </p>
       </div>
 

@@ -110,11 +110,11 @@
                         </td>
 
                         <td class="px-4 py-2">
-                            <%= a.work_hours ? format("%.2f", a.work_hours) : "-" %>
+                            <%= format_hours(a.work_hours) %>
                         </td>
 
                         <td class="px-4 py-2 text-orange-400">
-                            <%= a.ot_hours ? format("%.2f", a.ot_hours) : "-" %>
+                            <%= format_hours(a.ot_hours) %>
                         </td>
                         </tr>
                     <% end %>
