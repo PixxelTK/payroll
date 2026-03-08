@@ -5,7 +5,7 @@
     breadcrumb: nil
 %>
 
-<div class="w-[90%] flex flex-col sm:flex-row mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-4 relative z-10 sm:justify-between sm:items-center gap-2">
+<div class="w-[90%] max-w-4xl flex flex-col sm:flex-row mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-4 relative z-10 sm:justify-between sm:items-center gap-2">
     <%= form_with url: employees_path,
         method: :get,
         data: { turbo_frame: "employees" },
@@ -30,7 +30,7 @@
     <% end %>
 </div>
 
-<div class="w-[90%] mx-auto mt-6">
+<div class="w-[90%] max-w-4xl mx-auto mt-6">
     <% if notice.present? %>
         <p class="text-green-500 font-medium inline-block py-1" id="notice"><%= notice %></p>
     <% end %>

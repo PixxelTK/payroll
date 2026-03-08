@@ -5,7 +5,7 @@
     breadcrumb: link_to("Employees", employees_path) + " / New Employee"
 %>
 
-<div class="w-[90%] mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-6 relative z-10 mb-6">
+<div class="w-[90%] max-w-4xl mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-6 relative z-10 mb-6">
     <%= link_to "Back", employees_path, class: "w-full px-4 py-1 rounded-full mb-4 sm:w-auto text-center bg-gray-200 text-slate-500 hover:text-slate-600 dark:bg-gray-500 dark:text-slate-200 dark:hover:text-slate-100 inline-block" %>
     <%= render "form", employee: @employee %>
 </div>
