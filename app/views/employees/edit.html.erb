@@ -1,10 +1,27 @@
 <% content_for :title, "Editing employee" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing employee</h1>
+<turbo-frame id="modal">
 
-  <%= render "form", employee: @employee %>
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+       data-controller="modal"
+       data-action="click->modal#backdrop">
 
-  <%= link_to "Show this employee", @employee, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to employees", employees_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-</div>
+    <div class="bg-white dark:bg-zinc-700 rounded-xl p-6 w-full max-w-lg relative">
+      <div class="flex gap-2 items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Edit Employee</h2>
+
+        <button
+          class="text-gray-500 dark:text-gray-200 cursor-pointer"
+          data-action="click->modal#close">
+          <%= heroicon "x-mark", variant: :solid, options: { class: "w-6 h-6" } %>
+        </button>
+      </div>
+
+
+
+      <%= render "form", employee: @employee %>
+
+    </div>
+  </div>
+
+</turbo-frame>

@@ -9,6 +9,8 @@ class PinsController < ApplicationController
 
     if employee.authenticate_pin(params.require(:pin))
       session[:pin_verified] = employee.id
+      session[:pin_verified_at] = Time.current
+
       redirect_to params.require(:redirect_to)
     else
       flash.now[:alert] = "Invalid PIN please try again."

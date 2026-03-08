@@ -14,7 +14,7 @@ class PinsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should redirect when pin correct" do
+  test "should redirect when pin correct and set session" do
     post check_pins_url, params: {
       employee_id: @employee.id,
       pin: "1234",
@@ -22,6 +22,9 @@ class PinsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to employee_path(@employee)
+
+    assert_equal @employee.id, session[:pin_verified]
+    assert session[:pin_verified_at].present?
   end
 
   test "should render verify when pin incorrect" do
@@ -33,5 +36,8 @@ class PinsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select "h1", /Verify/i
+
+    assert_nil session[:pin_verified]
+    assert_nil session[:pin_verified_at]
   end
 end

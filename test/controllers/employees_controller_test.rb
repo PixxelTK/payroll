@@ -73,11 +73,28 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "should redirect if pin session expired" do
+    post check_pins_url, params: {
+      employee_id: @employee.id,
+      pin: "1234",
+      redirect_to: employee_path(@employee)
+    }
+
+    travel_to 6.minutes.from_now do
+      get employee_url(@employee)
+
+      assert_redirected_to verify_pins_path(
+        employee_id: @employee.id,
+        redirect_to: employee_path(@employee)
+      )
+    end
+  end
+
   test "should get edit (with pin verified)" do
     post check_pins_url, params: {
       employee_id: @employee.id,
       pin: "1234",
-      redirect_to: edit_employee_path(@employee)
+      redirect_to: employee_path(@employee)
     }
 
     get edit_employee_url(@employee)
@@ -88,7 +105,7 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
     post check_pins_url, params: {
       employee_id: @employee.id,
       pin: "1234",
-      redirect_to: edit_employee_path(@employee)
+      redirect_to: employee_path(@employee)
     }
 
     patch employee_url(@employee), params: {
@@ -99,7 +116,10 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_redirected_to employees_url
+    assert_redirected_to employee_url(@employee)
+
+    @employee.reload
+    assert_equal "Updated Name", @employee.name
   end
 
   test "should destroy employee" do

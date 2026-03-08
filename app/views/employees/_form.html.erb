@@ -1,4 +1,4 @@
-<%= form_with(model: employee, class: "contents") do |form| %>
+<%= form_with(model: employee, data: { turbo_frame: "_top" }, class: "contents") do |form| %>
 
   <% if employee.errors.any? %>
     <div class="bg-red-50/80 text-red-500 mb-2 px-3 py-2 font-medium rounded-md">

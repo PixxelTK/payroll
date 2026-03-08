@@ -1,7 +1,14 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
+  PIN_TIMEOUT = 5.minutes
 
   def index
+    if session[:pin_verified] &&
+      request.referer&.include?("/employees/#{session[:pin_verified]}")
+      session.delete(:pin_verified)
+      session.delete(:pin_verified_at)
+    end
+
     if params[:q].present?
       @employees = Employee.where("name ILIKE ?", "%#{params[:q]}%")
     else
@@ -10,15 +17,23 @@ class EmployeesController < ApplicationController
   end
 
   def show
-    unless session[:pin_verified] == @employee.id
+    verified_employee = session[:pin_verified]
+    verified_at = session[:pin_verified_at]
+
+    valid_session =
+      verified_employee == @employee.id &&
+      verified_at.present? &&
+      verified_at > PIN_TIMEOUT.ago
+
+    unless valid_session
+      session.delete(:pin_verified)
+      session.delete(:pin_verified_at)
+
       redirect_to verify_pins_path(
         employee_id: @employee.id,
         redirect_to: employee_path(@employee)
       )
-      return
     end
-
-    session.delete(:pin_verified)
   end
 
   def new
