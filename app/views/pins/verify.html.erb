@@ -4,29 +4,35 @@
     breadcrumb: link_to("Employees", employees_path) + " / Verify",
     gradient: "from-red-500/80 to-red-500/90" %>
 
-<div class="w-[90%] max-w-4xl mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-12 px-24 relative z-10">
+<div data-controller="pin" class="w-[90%] max-w-4xl mx-auto bg-white dark:bg-zinc-700 shadow-lg dark:shadow-xl rounded-2xl -mt-12 p-12 px-24 relative z-10">
   <div class="flex gap-2 text-lg justify-center mb-8">
     <%= heroicon "key", variant: :solid, options: { class: "w-8 h-8" } %>
-    <h3>Enter Employee PIN<h3>
+    <h3>Enter Employee PIN</h3>
   </div>
-  <%= form_with url: check_pins_path, method: :post, class: "w-min mx-auto" do%>
+
+  <%= form_with url: check_pins_path, method: :post, class: "w-min mx-auto" do %>
+
     <%= hidden_field_tag :employee_id, @employee.id %>
     <%= hidden_field_tag :redirect_to, @redirect_to %>
 
     <div class="flex justify-center gap-3 mb-4">
       <% 4.times do %>
-        <input type="password"
-               maxlength="1"
-               inputmode="numeric"
-               data-pin-input
-               class="w-14 h-14 text-center text-2xl border rounded-xl focus:ring-2 outline-none"
-               autocomplete="off">
+        <input
+          type="password"
+          maxlength="1"
+          inputmode="numeric"
+          autocomplete="off"
+          data-pin-target="input"
+          data-action="input->pin#input keydown->pin#keydown"
+          class="w-14 h-14 text-center text-2xl border rounded-xl focus:ring-2 outline-none"
+        >
       <% end %>
     </div>
 
-    <%= hidden_field_tag :pin, nil, id: "pin_combined" %>
+    <%= hidden_field_tag :pin, nil, id: nil, data: { pin_target: "hidden" } %>
 
-    <%= submit_tag "Verify", class: "bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg w-full" %>
+    <%= submit_tag "Verify",
+      class: "bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg w-full" %>
 
     <% if flash[:alert] %>
       <div class="text-red-500 dark:text-red-400 mt-3 text-sm text-center">
@@ -35,36 +41,4 @@
     <% end %>
 
   <% end %>
-
 </div>
-
-<script>
-  document.addEventListener("turbo:load", () => {
-    const inputs = document.querySelectorAll("[data-pin-input]")
-    const hidden = document.getElementById("pin_combined")
-
-    if (!inputs.length) return
-
-    inputs[0].focus()
-
-    inputs.forEach((input, index) => {
-      input.addEventListener("input", () => {
-        input.value = input.value.replace(/[^0-9]/g, "")
-        if (input.value.length === 1 && index < inputs.length - 1) {
-          inputs[index + 1].focus()
-        }
-        updatePin()
-      })
-
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !input.value && index > 0) {
-          inputs[index - 1].focus()
-        }
-      })
-    })
-
-    function updatePin() {
-      hidden.value = Array.from(inputs).map(i => i.value).join("")
-    }
-  })
-</script>
