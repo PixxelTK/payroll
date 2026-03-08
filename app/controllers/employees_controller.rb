@@ -26,6 +26,8 @@ class EmployeesController < ApplicationController
       verified_at.present? &&
       verified_at > PIN_TIMEOUT.ago
 
+    @date = params[:month] ? Date.parse("#{params[:month]}-01") : Date.current
+
     unless valid_session
       session.delete(:pin_verified)
       session.delete(:pin_verified_at)

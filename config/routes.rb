@@ -6,7 +6,14 @@ Rails.application.routes.draw do
       get :confirm_destroy
     end
   end
-  resources :attendances
+  resources :attendances do
+    member do
+      get :checkout
+    end
+    collection do
+      get :checkin
+    end
+  end
   resources :pins, only: [] do
     collection do
       get  :verify

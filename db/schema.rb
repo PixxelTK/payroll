@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_07_131035) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_08_065043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "attendances", force: :cascade do |t|
+    t.datetime "check_in"
+    t.datetime "check_out"
+    t.datetime "created_at", null: false
+    t.bigint "employee_id", null: false
+    t.datetime "updated_at", null: false
+    t.date "work_date"
+    t.index ["employee_id"], name: "index_attendances_on_employee_id"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -22,4 +32,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_07_131035) do
     t.decimal "salary"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "attendances", "employees"
 end
