@@ -23,15 +23,20 @@
 
   <% if attendance.present? %>
 
-    <% hours = attendance.work_hours %>
     <% ot = attendance.ot_hours %>
+
+    <% if attendance.check_out.present? %>
+      <% hours = attendance.work_hours %>
+    <% else %>
+      <% hours = ((Time.current - attendance.check_in) / 1.hour) %>
+    <% end %>
 
     <% progress = [(hours / 8.0 * 100), 100].min %>
 
     <div class="mb-3">
       <div class="flex justify-end text-xs text-gray-500 dark:text-gray-300 mb-1">
         <span>
-          <%= format_hours(attendance.work_hours) %> / 8h
+          <%= format_hours(hours) %> / 8h
         </span>
       </div>
 
@@ -62,7 +67,7 @@
       <div class="bg-gray-50 dark:bg-zinc-600 rounded-lg p-4">
         <p class="text-gray-500 dark:text-gray-300 text-xs mb-1">Hours</p>
         <p class="text-lg font-semibold">
-          <%= attendance.check_out ? format_hours(attendance.work_hours) : "-" %>
+            <%= attendance.check_out ? format_hours(attendance.work_hours) : format_hours(hours) %>
         </p>
       </div>
 
